@@ -1,9 +1,9 @@
-﻿using Api.Locadoura.Model;
+﻿using Api.Locadora.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Locadoura.Persistencia
+namespace Api.Locadora.Persistence
 {
-    public class LocadouraContext: DbContext
+    public class LocadoraContext: DbContext
     {
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Carro> Carros { get; set; }

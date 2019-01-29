@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Api.Locadoura.Model;
+using Api.Locadora.Models;
+using Api.Locadora.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Locadoura.Persistencia
+namespace Api.Locadora.Persistencia
 {
-    public class LocadouraDAO: IDisposable
+    public class LocadoraDAO: IDisposable
     {
-        private LocadouraContext _context;
+        private LocadoraContext _context;
 
-        public LocadouraDAO()
+        public LocadoraDAO()
         {
-            _context = new LocadouraContext();
+            _context = new LocadoraContext();
         }
 
         public Cliente AddCliente(Cliente cliente)

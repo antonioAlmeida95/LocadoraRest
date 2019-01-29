@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Locadoura", "Api.Lacadoura\Api.Locadoura.csproj", "{2C617B35-2C3C-48B5-AFFF-2DBE50D0C79D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Locadora", "Api.Lacadoura\Api.Locadora.csproj", "{2C617B35-2C3C-48B5-AFFF-2DBE50D0C79D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

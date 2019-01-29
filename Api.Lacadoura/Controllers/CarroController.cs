@@ -1,34 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Api.Locadoura.Model;
-using Api.Locadoura.Persistencia;
+using Api.Locadora.Models;
+using Api.Locadora.Persistencia;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Locadoura.Controllers
+namespace Api.Locadora.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CarroController : ControllerBase
     {
-        private readonly LocadouraDAO _locadouraDao;
+        private readonly LocadoraDAO _locadoraDao;
 
         public CarroController()
         {
-            _locadouraDao = new LocadouraDAO();
+            _locadoraDao = new LocadoraDAO();
         }
 
         // GET: api/Carro
         [HttpGet]
         public IEnumerable<Carro> Get()
         {
-            var lista = _locadouraDao.GetCarros();
+            var lista = _locadoraDao.GetCarros();
             return lista;
         }
 
         [HttpGet("{id}", Name = "GetCarro")]
         public async Task<ActionResult<Carro>> GetCarro(int id)
         {
-            var carro = _locadouraDao.GetCarroById(id);
+            var carro = _locadoraDao.GetCarroById(id);
 
             if (carro == null)
             {
@@ -46,7 +46,7 @@ namespace Api.Locadoura.Controllers
                 return BadRequest();
             }
 
-            _locadouraDao.AtualizarCarro(carro);
+            _locadoraDao.AtualizarCarro(carro);
 
             return carro;
         }
@@ -54,13 +54,13 @@ namespace Api.Locadoura.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Carro>> DeleteCarro(int id)
         {
-            var carro = _locadouraDao.GetCarroById(id);
+            var carro = _locadoraDao.GetCarroById(id);
             if (carro == null)
             {
                 return NotFound();
             }
 
-            _locadouraDao.ExcluirCarro(c => c.Id == id);
+            _locadoraDao.ExcluirCarro(c => c.Id == id);
 
             return carro;
         }
@@ -68,7 +68,7 @@ namespace Api.Locadoura.Controllers
         [HttpPost]
         public async Task<ActionResult<Carro>> PostCarro(Carro carro)
         {
-            _locadouraDao.AddCarro(carro);
+            _locadoraDao.AddCarro(carro);
             return CreatedAtAction("GetCarro", new { id = carro.Id }, carro);
         }
     }

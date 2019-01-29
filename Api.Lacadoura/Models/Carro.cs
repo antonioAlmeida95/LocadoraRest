@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Api.Locadoura.Model
+namespace Api.Locadora.Models
 {
     public class Carro
     {
