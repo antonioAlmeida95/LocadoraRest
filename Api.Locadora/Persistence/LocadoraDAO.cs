@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Api.Locadora.Models;
 using Api.Locadora.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +42,8 @@ namespace Api.Locadora.Persistencia
         public Cliente GetClienteById(int id)
         {
             return _context.Clientes
+                .Include(c => c.Nome)
+                .ThenInclude(h => h.HistorioVersionamento)
                 .Include(ca => ca.Locados)
                 .ThenInclude(c => c.Carro)
                 .FirstOrDefault(c => id != 0 && id == c.Id);
@@ -53,6 +54,8 @@ namespace Api.Locadora.Persistencia
             return _context.Clientes
                 .Include(ca => ca.Locados)
                 .ThenInclude(c => c.Carro)
+                .Include(c => c.Nome)
+                .ThenInclude(h => h.HistorioVersionamento)
                 .ToList();
         }
 
@@ -89,7 +92,7 @@ namespace Api.Locadora.Persistencia
 
         public Cliente AtualizarCliente(Cliente cliente)
         {
-            var entity = _context.Set<Cliente>().Update(cliente).Entity;
+            var entity = _context.Clientes.Update(cliente).Entity;
             _context.SaveChanges();
             return entity;
         }
