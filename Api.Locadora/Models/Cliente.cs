@@ -9,10 +9,13 @@ namespace Api.Locadora.Models
 
         public int Versao { get; set; } = 0;
 
+        [JsonIgnore]
+        public int NomeId { get; set; }
         public Propriedade Nome { get; set; }
 
-
-        public string Perfil { get; set; }
+        [JsonIgnore]
+        public int PerfilId { get; set; }
+        public Propriedade Perfil { get; set; }
 
         public List<Locacoes> Locados { get; set; } = new List<Locacoes>();
 

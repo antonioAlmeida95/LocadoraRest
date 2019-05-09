@@ -43,7 +43,9 @@ namespace Api.Locadora.Persistencia
         {
             return _context.Clientes
                 .Include(c => c.Nome)
-                .ThenInclude(h => h.HistorioVersionamento)
+                .ThenInclude(h => h.Versoes)
+                .Include(c => c.Perfil)
+                .ThenInclude(h => h.Versoes)
                 .Include(ca => ca.Locados)
                 .ThenInclude(c => c.Carro)
                 .FirstOrDefault(c => id != 0 && id == c.Id);
@@ -55,7 +57,9 @@ namespace Api.Locadora.Persistencia
                 .Include(ca => ca.Locados)
                 .ThenInclude(c => c.Carro)
                 .Include(c => c.Nome)
-                .ThenInclude(h => h.HistorioVersionamento)
+                .ThenInclude(h => h.Versoes)
+                .Include(c => c.Perfil)
+                .ThenInclude(h => h.Versoes)
                 .ToList();
         }
 
@@ -64,6 +68,8 @@ namespace Api.Locadora.Persistencia
             return _context.Carros
                 .Include(cl => cl.Locacoes)
                 .ThenInclude(c => c.Cliente)
+                .Include(c => c.Modelo)
+                .ThenInclude(c => c.Versoes)
                 .FirstOrDefault(c => carro.Id != 0 && c.Id == carro.Id);
         }
 
@@ -72,6 +78,8 @@ namespace Api.Locadora.Persistencia
             return _context.Carros
                 .Include(cl => cl.Locacoes)
                 .ThenInclude(c => c.Cliente)
+                .Include(c => c.Modelo)
+                .ThenInclude(c => c.Versoes)
                 .FirstOrDefault(c => id != 0 && c.Id == id);
         }
 
