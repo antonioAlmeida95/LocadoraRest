@@ -9,10 +9,10 @@ namespace Api.Locadora.Models
         [JsonIgnore]
         public int Id { get; set; }
         public DateTimeOffset Data { get; set; }
-        public string Nome { get; set; }
-        public string Tipo { get; set; }
-        public string Valor { get; set; }
-        public string Status { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Tipo { get; set; } = string.Empty;
+        public string Valor { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
 
         [JsonIgnore]
         public int PropriedadeId { get; set; }

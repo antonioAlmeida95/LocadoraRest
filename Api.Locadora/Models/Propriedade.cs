@@ -6,7 +6,7 @@ namespace Api.Locadora.Models
     public class Propriedade : IHistorico
     {
         public int Id { get; set; }
-        public string Valor { get; set; }
+        public string Valor { get; set; } = string.Empty;
         public int Versao { get; set; }
 
         [JsonIgnore]
