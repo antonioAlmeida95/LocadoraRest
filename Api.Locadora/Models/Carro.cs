@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using Api.Locadora.Models.Interfaces;
 using Newtonsoft.Json;
 
 namespace Api.Locadora.Models
 {
-    public class Carro : IHistorico
+    public class Carro : Entity
     {
         public int Id { get; set; }
+        public int Versao { get; set; }
 
         [JsonIgnore]
         public int ModeloId { get; set; }
@@ -20,7 +22,5 @@ namespace Api.Locadora.Models
         {
             this.Locacoes = new List<Locacoes>();
         }
-
-        public int Versao { get; set; }
     }
 }

@@ -12,6 +12,12 @@
     <Compile Remove="Migrations\20190506174301_histo.Designer.cs" />
     <Compile Remove="Migrations\20190508172701_Inicial.cs" />
     <Compile Remove="Migrations\20190508172701_Inicial.Designer.cs" />
+    <Compile Remove="Migrations\20190513132253_Status.cs" />
+    <Compile Remove="Migrations\20190513132253_Status.Designer.cs" />
+    <Compile Remove="Migrations\20190513134007_StatusAlter.cs" />
+    <Compile Remove="Migrations\20190513134007_StatusAlter.Designer.cs" />
+    <Compile Remove="Migrations\20190513175603_Refatoracao.cs" />
+    <Compile Remove="Migrations\20190513175603_Refatoracao.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

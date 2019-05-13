@@ -3,15 +3,17 @@ using System;
 using Api.Locadora.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Api.Locadora.Migrations
 {
     [DbContext(typeof(LocadoraContext))]
-    partial class LocadoraContextModelSnapshot : ModelSnapshot
+    [Migration("20190513130117_AlteracaoDoContext")]
+    partial class AlteracaoDoContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,9 +51,6 @@ namespace Api.Locadora.Migrations
                     b.Property<int>("NomeId");
 
                     b.Property<int>("PerfilId");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired();
 
                     b.Property<int>("Versao");
 

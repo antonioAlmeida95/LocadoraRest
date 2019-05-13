@@ -3,11 +3,12 @@ using Newtonsoft.Json;
 
 namespace Api.Locadora.Models
 {
-    public class Cliente : IHistorico
+    public class Cliente : Entity
     {
         public int Id { get; set; }
-
+        public Status Tipo { get; set; }
         public int Versao { get; set; } = 0;
+        
 
         [JsonIgnore]
         public int NomeId { get; set; }
@@ -19,5 +20,11 @@ namespace Api.Locadora.Models
 
         public List<Locacoes> Locados { get; set; } = new List<Locacoes>();
 
+    }
+
+    public enum Status
+    {
+       Adimplente,
+       Inadimplente
     }
 }

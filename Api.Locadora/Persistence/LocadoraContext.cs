@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Api.Locadora.Models;
+using Api.Locadora.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -12,10 +13,6 @@ namespace Api.Locadora.Persistence
     {
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Carro> Carros { get; set; }
-        public DbSet<Locacoes> Locacoes { get; set; }
-        public DbSet<Propriedade> Propriedades { get; set; }
-
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,11 +46,15 @@ namespace Api.Locadora.Persistence
             modelBuilder.Entity<Propriedade>()
                 .HasMany(prop => prop.ModeloCarros).WithOne(car => car.Modelo).HasForeignKey(c => c.ModeloId)
                 .IsRequired();
+
+            modelBuilder.Entity<Cliente>()
+                .Property(c => c.Tipo)
+                .HasConversion(c => c.ToString(),
+                    c => (Status)Enum.Parse(typeof(Status), c));
         }
 
         public override int SaveChanges()
         {
-
             try
             {
                 OnBeforeChanging();
@@ -95,56 +96,34 @@ namespace Api.Locadora.Persistence
                         case Cliente client:
                             {
                                 var orginalValues = (Cliente)values ?? new Cliente();
-                                client.Versao = versao;
-                                client.Versao++;
+                                client.Versao = versao + 1;
 
                                 if (member.Metadata.Name.Equals(nameof(Cliente.Nome)))
                                 {
-                                    var valor = orginalValues.Nome?.Valor ?? "";
+                                    if (client.Nome.Valor.Equals(orginalValues.Nome?.Valor)) continue;
 
-                                    if (client.Nome.Valor.Equals(valor))
-                                        continue;
-
-                                    versionamento.Nome = member.Metadata.Name;
-                                    versionamento.Versao = client.Nome.Versao = client.Versao;
-                                    versionamento.Valor = client.Nome.Valor;
-                                    client.Nome.Versoes.Add(versionamento);
+                                    client.Nome.AdcionarVersao(versionamento, member.Metadata.Name, client.Versao);
                                 }
 
                                 if (member.Metadata.Name.Equals(nameof(Cliente.Perfil)))
                                 {
-                                    var valor = orginalValues.Perfil?.Valor ?? "";
+                                    if (client.Perfil.Valor.Equals(orginalValues.Perfil?.Valor)) continue;
 
-                                    if (client.Perfil.Valor.Equals(valor))
-                                        continue;
-
-                                    versionamento.Nome = member.Metadata.Name;
-                                    versionamento.Versao = client.Perfil.Versao = client.Versao;
-                                    versionamento.Valor = client.Perfil.Valor;
-                                    client.Perfil.Versoes.Add(versionamento);
+                                    client.Perfil.AdcionarVersao(versionamento, member.Metadata.Name, client.Versao);
                                 }
-
                                 break;
                             }
                         case Carro carro:
                             {
                                 var originalValues = (Carro)values ?? new Carro();
-                                carro.Versao = versao;
-                                carro.Versao++;
+                                carro.Versao = versao + 1;
 
                                 if (member.Metadata.Name.Equals(nameof(Carro.Modelo)))
                                 {
-                                    var valor = originalValues.Modelo?.Valor ?? "";
+                                    if (carro.Modelo.Valor.Equals(originalValues.Modelo?.Valor)) continue;
 
-                                    if (carro.Modelo.Valor.Equals(valor))
-                                        continue;
-
-                                    versionamento.Nome = member.Metadata.Name;
-                                    versionamento.Versao = carro.Modelo.Versao = carro.Versao;
-                                    versionamento.Valor = carro.Modelo.Valor;
-                                    carro.Modelo.Versoes.Add(versionamento);
+                                    carro.Modelo.AdcionarVersao(versionamento, member.Metadata.Name, carro.Versao);
                                 }
-
                                 break;
                             }
                     }
@@ -156,9 +135,9 @@ namespace Api.Locadora.Persistence
         private int GetVersao(EntityEntry entry)
         {
             var versao = 0;
-            if (entry.State == EntityState.Modified)
+            if (entry != null && entry.State == EntityState.Modified)
             {
-                versao = entry.GetDatabaseValues().GetValue<int>(nameof(IHistorico.Versao));
+                versao = entry.GetDatabaseValues().GetValue<int>(nameof(Entity.Versao));
             }
 
             return versao;
@@ -171,36 +150,36 @@ namespace Api.Locadora.Persistence
                 switch (entry.Entity)
                 {
                     case Cliente cliente:
-                    {
-                        var value = this.Clientes.AsNoTracking()
-                            .Include(c => c.Nome)
-                            .Include(c => c.Perfil)
-                            .FirstOrDefault(c => c.Id == cliente.Id);
-                        original = value;
+                        {
+                            var value = this.Clientes.AsNoTracking()
+                                .Include(c => c.Nome)
+                                .Include(c => c.Perfil)
+                                .FirstOrDefault(c => c.Id == cliente.Id);
+                            original = value;
 
-                        if (value == null) return false;
+                            if (value == null) return false;
 
-                        cliente.Versao = value.Versao;
-                        cliente.Nome.Versao = value.Nome.Versao;
-                        cliente.Perfil.Versao = value.Perfil.Versao;
+                            cliente.Versao = value.Versao;
+                            cliente.Nome.Versao = value.Nome.Versao;
+                            cliente.Perfil.Versao = value.Perfil.Versao;
 
-                        return (value.Nome.Valor.Equals(cliente.Nome.Valor)
-                                && value.Perfil.Valor.Equals(cliente.Perfil.Valor));
-                    }
+                            return (value.Nome.Valor.Equals(cliente.Nome.Valor)
+                                    && value.Perfil.Valor.Equals(cliente.Perfil.Valor));
+                        }
                     case Carro carro:
-                    {
-                        var value = this.Carros.AsNoTracking()
-                            .Include(c => c.Modelo)
-                            .FirstOrDefault(c => c.Id == carro.Id);
-                        original = value;
+                        {
+                            var value = this.Carros.AsNoTracking()
+                                .Include(c => c.Modelo)
+                                .FirstOrDefault(c => c.Id == carro.Id);
+                            original = value;
 
-                        if (value == null) return false;
+                            if (value == null) return false;
 
-                        carro.Versao = value.Versao;
-                        carro.Modelo.Versao = value.Modelo.Versao;
+                            carro.Versao = value.Versao;
+                            carro.Modelo.Versao = value.Modelo.Versao;
 
-                        return  value.Modelo.Valor.Equals(carro.Modelo.Valor);
-                    }
+                            return value.Modelo.Valor.Equals(carro.Modelo.Valor);
+                        }
                 }
             }
 
