@@ -7,7 +7,7 @@ namespace Api.Locadora.Models
     {
         public int Id { get; set; }
         public Status Tipo { get; set; }
-        public int Versao { get; set; } = 0;
+        public int Versao { get; set; }
         
 
         [JsonIgnore]

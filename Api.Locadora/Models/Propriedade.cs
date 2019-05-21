@@ -24,9 +24,9 @@ namespace Api.Locadora.Models
         public void AdcionarVersao(Versionamento versionamento, string tipo, int versao)
         {
             versionamento.Nome = tipo;
-            versionamento.Versao = this.Versao = versao;
-            versionamento.Valor = this.Valor;
-            this.Versoes.Add(versionamento);
+            versionamento.Versao = Versao = versao;
+            versionamento.Valor = Valor;
+            Versoes.Add(versionamento);
         }
     }
 }

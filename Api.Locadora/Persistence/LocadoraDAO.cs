@@ -93,16 +93,35 @@ namespace Api.Locadora.Persistencia
 
         public Carro AtualizarCarro(Carro carro)
         {
-            var entity = _context.Set<Carro>().Update(carro).Entity;
+            var carroDb = new Carro();
+
+            if (carro.Id > 0)
+            {
+                carroDb = GetCarroById(carro.Id) ?? throw new ArgumentException("Não foi possivel localizar o carro.");
+            }
+
+            carroDb.Atualizar(carro);
+
+            var entity = _context.Set<Carro>().Update(carroDb).Entity;
             _context.SaveChanges();
             return entity;
         }
 
         public Cliente AtualizarCliente(Cliente cliente)
         {
-            var entity = _context.Clientes.Update(cliente).Entity;
+            var clienteDb = new Cliente();
+
+            if (cliente.Id > 0)
+            {
+                clienteDb = GetClienteById(cliente.Id) ??
+                            throw new ArgumentException("Não foi possivel localizar o cliente");
+            }
+
+            clienteDb.Atualizar(cliente);
+            var entry = _context.Clientes.Update(clienteDb);
             _context.SaveChanges();
-            return entity;
+
+            return entry.Entity;
         }
 
         public void ExcluirCliente(Expression<Func<Cliente, bool>> clasulaWhere)
