@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Api.Locadora.Models;
 using Api.Locadora.Persistencia;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +26,7 @@ namespace Api.Locadora.Controllers
 
         // GET: api/Cliente/5
         [HttpGet("{id}", Name = "GetCliente")]
-        public async Task<ActionResult<Cliente>> GetCliente(int id)
+        public ActionResult<Cliente> GetCliente(int id)
         {
             var cliente = _locadoraDao.GetClienteById(id);
 
@@ -40,7 +39,7 @@ namespace Api.Locadora.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Cliente>> PutCliente(int id, Cliente cliente)
+        public ActionResult<Cliente> PutCliente(int id, Cliente cliente)
         {
             if (id != cliente.Id)
             {
@@ -53,7 +52,7 @@ namespace Api.Locadora.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Cliente>> DeleteCliente(int id)
+        public ActionResult<Cliente> DeleteCliente(int id)
         {
             var cliente = _locadoraDao.GetClienteById(id);
             if (cliente == null)
@@ -67,7 +66,7 @@ namespace Api.Locadora.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Cliente>> PostTodoItem(Cliente cliente)
+        public ActionResult<Cliente> PostTodoItem(Cliente cliente)
         {
             _locadoraDao.AddCliente(cliente);
             return CreatedAtAction("GetCliente", new { id = cliente.Id }, cliente);

@@ -4,14 +4,13 @@ using Newtonsoft.Json;
 
 namespace Api.Locadora.Models
 {
-    public class Carro : Entity
+    public class Carro : TrackableEntity, ICarro
     {
         public int Id { get; set; }
         public int Versao { get; set; }
 
-        [JsonIgnore]
-        public int ModeloId { get; set; }
-        public Propriedade Modelo { get; set; }
+
+        public string Modelo { get; set; }
 
         public int Ano { get; set; }
         public int Velocidade { get; set; }
@@ -21,6 +20,19 @@ namespace Api.Locadora.Models
         public Carro()
         {
             this.Locacoes = new List<Locacoes>();
+        }
+
+        public override IList<IHistorico> Historicos { get; set; }
+        public override IHistorico CriarHistorico()
+        {
+            return new CarroHistorico
+            {
+                Versao = Versao,
+                Modelo = Modelo,
+                Ano = Ano,
+                Diaria = Diaria,
+                Velocidade = Velocidade
+            };
         }
     }
 }

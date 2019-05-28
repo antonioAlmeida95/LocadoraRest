@@ -26,7 +26,7 @@ namespace Api.Locadora.Controllers
         }
 
         [HttpGet("{id}", Name = "GetCarro")]
-        public async Task<ActionResult<Carro>> GetCarro(int id)
+        public ActionResult<Carro> GetCarro(int id)
         {
             var carro = _locadoraDao.GetCarroById(id);
 
@@ -39,7 +39,7 @@ namespace Api.Locadora.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Carro>> PutCarro(long id, Carro carro)
+        public ActionResult<Carro> PutCarro(long id, Carro carro)
         {
             if (id != carro.Id)
             {
@@ -52,7 +52,7 @@ namespace Api.Locadora.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Carro>> DeleteCarro(int id)
+        public ActionResult<Carro> DeleteCarro(int id)
         {
             var carro = _locadoraDao.GetCarroById(id);
             if (carro == null)
@@ -66,7 +66,7 @@ namespace Api.Locadora.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Carro>> PostCarro(Carro carro)
+        public ActionResult<Carro> PostCarro(Carro carro)
         {
             _locadoraDao.AddCarro(carro);
             return CreatedAtAction("GetCarro", new { id = carro.Id }, carro);

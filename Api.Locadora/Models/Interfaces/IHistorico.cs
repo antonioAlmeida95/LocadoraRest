@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Api.Locadora.Models.Interfaces
 {
@@ -6,9 +7,8 @@ namespace Api.Locadora.Models.Interfaces
     {
         int Versao { get; set; }
 
-        List<Versionamento> Versoes { get; set; }
+        int Id { get; set; }
 
-        void AdcionarVersao(Versionamento versionamento, string tipo, int versao);
-
+        DateTimeOffset DHModificacao { get; set; }
     }
 }

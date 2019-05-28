@@ -7,8 +7,6 @@ namespace Api.Locadora.Models
 {
     public class Entity : IEntity
     {
-        public int Versao { get; set; } = 0;
-
         public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             yield break;
